@@ -71,7 +71,7 @@ encontreJoseEJeca("JoseBaldo e Jeca são legais")
 As flags são indicativos para o programa que irá interpretar a expressão regular. Basta inserir a flag após a última barra e pronto.
 
 
-### Case sensitive - Flag i
+### <a name="case-sensitive"></a> Case sensitive - Flag i
 
 Utilizamos o REGEX para verificar se uma frase contém uma determinada palavra ou conjunto de caracteres, porém podemos ter um problema se considerarmos que o REGEX é case sensitive, ou seja, ele não encontraria o nome “JoseBaldo” se na frase estivesse tudo minúsculo.
 
