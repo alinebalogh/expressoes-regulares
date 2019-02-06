@@ -89,7 +89,7 @@ encontreJoseEJeca("Oi jecabeludo") // retorna true
 encontreJoseEJeca("Oi joseBaldo") // retorna true
 ```
 
-### Global - Flag g
+### <a name="global"></a> Global - Flag g
 
 Até agora, você deve ter percebido que utilizamos o REGEX apenas para dizer se existe ou não uma expressão em determinada string. Mas podemos ir além. É possível criar uma função onde toda vez que a expressão for encontrada na string é retornado um array com essa expressão.
 
