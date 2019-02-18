@@ -7,6 +7,13 @@
 3. [Flags](#flags)
    * [Case sensitive](#case-sensitive)
    * [Global](#global)
+4. [Criando Padrões](#criando-padrões)
+   * [Caractere Curinga](#caractere-curinga)
+   * [Conjuntos](#conjuntos)
+   * [Conjuntos negativos](#conjuntos-negativos)
+   * [Conjuntos com intervalos](#conjuntos-intervalos)
+5. [Exemplos com REGEX](#exemplos-com-regex)
+   * [Validando campo numérico](#valid-campo-numerico)
 
 ## Introdução
 
@@ -115,4 +122,118 @@ encontreTodos(frase) // retornará ["que", "que", "que"]
 ```
 
 Note que estamos usandoo método “match” do javascript, ele retorna exatamente o que precisamos, um array com todos os matches (combinações). Bacana não é?
+
+## Criando Padrões
+
+Nos tópicos acima, tivemos uma breve introdução sobre REGEX e o potencial que gira em torno dele. Como disse, foi só uma introdução. Há muito mais para aprender e descobrir.
+
+Agora, vamos falar sobre como ir além de uma busca literal e começar a criar expressões regulares mais elegantes e voltadas a padrões.
+
+### <a name="caractere-curinga"></a> Caractere Curinga
+
+Caractere curinga, nada mais é do que um ponto final “.”. Quando utilizado em uma expressão regular, ele significa “qualquer caractere”. Isto é, o caractere pode ser do tipo alfabeto, numérico, especial, etc. Todos os tipos de caractere entram nesta lista.
+
+Para entendermos melhor, vamos para parte prática. Imagine que você precisa encontrar, num longo texto, todas as palavras de três letras que terminem com “ão”. 
+“Pão”, “cão”, “vão” e “não” são algumas das possibilidades que você poderá encontrar neste texto.
+
+Esta tarefa de analisar um longo texto e encontrar determinadas palavras, seria um tanto complicada para fazer manualmente. Levaria um tempo considerável e ainda teríamos um risco de possíveis falhas humanas, pois facilmente poderíamos não encontrar alguma palavra por diversas razões.
+
+Contudo, para o nosso amigo REGEX esta tarefa não seria difícil assim. 
+Com certeza, ele pode nos ajudar nesta missão.
+
+Abaixo, seguem frases de exemplo com algumas palavras que se encaixam nas regras definidas no problema acima.
+
+```
+let paoStr = "Eu tenho um pão";
+let maoStr = "Minha mão esta cheia de doces";
+let maoPaoStr = "Minha mão esta cheia de pão para o cão"
+```
+
+O REGEX e a função de comparação ficariam assim:
+
+```
+let regexG = /.ão/g;
+paoStr.match(regexG); // Retorna ["pão"]
+maoStr.match(regexG); // Retorna ["mão"]
+maoPaoStr.match(regexG) // Retorna ["mão", "pão", "cão" ]
+```
+
+📌 *Dica: Caso você não conheça o método match, dá uma olhada no artigo anterior [aqui](#global).*
+
+Utilizamos o caractere curinga para dizer ao método que busque qualquer palavra que inicie com qualquer caractere (p, m, etc), desde que seja sucedida por “ão”. É isso. Testa o código acima e me conta.
+
+Achou fácil? Bora colocar um pouco mais de complexidade no exemplo do acima?
+
+### <a name="conjuntos"></a> Conjuntos
+
+Digamos que as especificações do problema acima foram alteradas 😒, e agora você terá que filtrar do texto somente as palavras de três letras que iniciem com as letras “m”, “p” ou “c” e terminem com “ão”. Algumas pessoas usariam expressões regulares na sua forma literal, o que é perfeitamente ok (aprendemos [aqui](#string-literal)), mas podemos criar algo muito mais elegante e tão eficiente quanto: Conjuntos.
+
+Conjuntos, são representados por colchetes [] e dentro dele especificamos quais caracteres pertencem a este conjunto. No nosso caso, o conjunto será representado pela expressão `[pmc]`.
+Dá uma olhada no código da solução👀 :
+
+```
+let str = "Nem sim nem não, o que eu queria é café com pão da sua mão. Disse o cão em vão";
+let regexG = /[mpc]ão/g;
+str.match(regexG); // Retorna ["pão", "mão", "cão"]
+```
+
+### <a name="conjuntos-negativos"></a> Conjuntos negativos
+
+E se nossa função tivesse que encontrar todas as palavras de três letras terminando com ‘ão’, **exceto** as que comecem com “p”, “m” ou “c”? Pare e pense. O que você faria?
+
+Sim! Um conjunto negativo. Através da expressão regular você informará ao programa que deseja ignorar um determinado conjunto de caracteres.
+
+O conjunto negativo é indicado pelo acento tônico, o nosso querido e amado chapeuzinho ^. Portanto, o nosso REGEX ficaria assim: `[^mpc]`.
+
+Vamos ver se funciona? Abre o console e testa aí, ok?
+
+```
+let str = "Nem sim nem não, o que eu queria é café com pão da sua mão. Disse o cão em vão";
+let regexG = /[^mpc]ão/g;
+str.match(regexG); // Retorna ["não", "vão"]
+```
+
+Não é maravilhoso!? 😍
+
+
+### <a name="conjuntos-intervalos"></a> Conjuntos com intervalos
+
+Como implementaríamos uma solução para reconhecer todas as letras do alfabeto de a à z? Ou todos os números de 0 à 9?
+
+No primeiro tópico deste artigo falamos sobre o caractere curinga “.”, que no exemplo dado, filtraria qualquer palavra desde que terminasse com “ão”. Isso quer dizer que ele filtraria, por exemplo, as palavras invalidas “3ão” “!ão”.
+
+```
+str = "Minha mão esta cheia de pão para o cão 3ão !ão .ão  ão"let regexG = /.ão/g;
+str.match(regexG); //  ["mão", "pão", "cão", "3ão", "!ão", ".ão", " ão"]
+```
+
+Imagina o problema que isso poderia causar!? Com conjuntos de intervalos, podemos melhorar o filtro desenvolvido anteriormente e evitar que a função retorne resultados indevidos. Para usar **intervalos**, basta separa-los por “-”, como no exemplo abaixo `[a-z]`:
+
+```
+str = "Minha Mão esta cheia de pão para o cão 3ão !ão .ão  ão"
+let regexG = /[a-z]ão/gi;
+str.match(regexG); //  Retorna ["Mão", "pão", "cão"]
+```
+
+Yay! Resolveu nosso problema :)
+
+## Exemplos com REGEX
+
+### <a name="valid-campo-numerico"></a> Validando campo númerico com conjuntos de intervalos
+
+Talvez você esteja procurando um problema mais real, certo?
+
+Digamos que precisamos validar um campo de um formulário. E pela regra de negócio, este campo deve ser preenchido apenas com números. 
+Como validaríamos se existe algum caractere alfanumérico indevido neste campo deste formulário?
+
+Com REGEX conseguimos testar se um campo de formulário contém alguma letra do alfabeto, utilizando conjunto de intervalo, conforme exemplo abaixo:
+
+```
+let campoNum = "119A9382083"
+const regex = /[a-z]/gi
+if(regex.test(tel)){ // true
+   // retorna algum erro!
+} 
+```
+
 
