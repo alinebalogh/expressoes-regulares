@@ -200,7 +200,7 @@ Não é maravilhoso!? 😍
 
 Como implementaríamos uma solução para reconhecer todas as letras do alfabeto de a à z? Ou todos os números de 0 à 9?
 
-No primeiro tópico deste artigo falamos sobre o caractere curinga “.”, que no exemplo dado, filtraria qualquer palavra desde que terminasse com “ão”. Isso quer dizer que ele filtraria, por exemplo, as palavras invalidas “3ão” “!ão”.
+No primeiro tópico desta seção falamos sobre o caractere curinga “.”, que no exemplo dado, filtraria qualquer palavra desde que terminasse com “ão”. Isso quer dizer que ele filtraria, por exemplo, as palavras invalidas “3ão” “!ão”.
 
 ```
 str = "Minha mão esta cheia de pão para o cão 3ão !ão .ão  ão"let regexG = /.ão/g;
